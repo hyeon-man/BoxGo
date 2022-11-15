@@ -1,0 +1,101 @@
+-- --------------------------------------------------------
+-- 호스트:                          127.0.0.1
+-- 서버 버전:                        10.8.4-MariaDB - mariadb.org binary distribution
+-- 서버 OS:                        Win64
+-- HeidiSQL 버전:                  11.3.0.6295
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- boxgo 데이터베이스 구조 내보내기
+DROP DATABASE IF EXISTS `boxgo`;
+CREATE DATABASE IF NOT EXISTS `boxgo` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+USE `boxgo`;
+
+-- 테이블 boxgo.detail 구조 내보내기
+DROP TABLE IF EXISTS `detail`;
+CREATE TABLE IF NOT EXISTS `detail` (
+  `id` int(11) NOT NULL COMMENT '제품번호',
+  `category` varchar(32) DEFAULT NULL COMMENT '카테고리',
+  `brand` varchar(64) DEFAULT NULL COMMENT '브랜드',
+  `size` varchar(32) DEFAULT NULL COMMENT '사이즈',
+  `color` varchar(32) DEFAULT NULL COMMENT '컬러',
+  `price` int(11) DEFAULT NULL COMMENT '원가',
+  `sale_price` int(11) DEFAULT NULL COMMENT '판매가',
+  `content` longtext DEFAULT NULL COMMENT '상세정보',
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_detail_product` FOREIGN KEY (`id`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='제품상세';
+
+-- 테이블 데이터 boxgo.detail:~0 rows (대략적) 내보내기
+DELETE FROM `detail`;
+/*!40000 ALTER TABLE `detail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detail` ENABLE KEYS */;
+
+-- 테이블 boxgo.domain 구조 내보내기
+DROP TABLE IF EXISTS `domain`;
+CREATE TABLE IF NOT EXISTS `domain` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '항목번호',
+  `name` varchar(32) NOT NULL COMMENT '항목명',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COMMENT='항목사전';
+
+-- 테이블 데이터 boxgo.domain:~17 rows (대략적) 내보내기
+DELETE FROM `domain`;
+/*!40000 ALTER TABLE `domain` DISABLE KEYS */;
+INSERT INTO `domain` (`id`, `name`) VALUES
+	(32, '브랜드'),
+	(33, '카테고리'),
+	(34, '사이즈'),
+	(35, '색상'),
+	(36, '가격');
+/*!40000 ALTER TABLE `domain` ENABLE KEYS */;
+
+-- 테이블 boxgo.keywords 구조 내보내기
+DROP TABLE IF EXISTS `keywords`;
+CREATE TABLE IF NOT EXISTS `keywords` (
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `domain_id` int(11) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK__domain` (`domain_id`),
+  CONSTRAINT `FK__domain` FOREIGN KEY (`domain_id`) REFERENCES `domain` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='용어';
+
+-- 테이블 데이터 boxgo.keywords:~2 rows (대략적) 내보내기
+DELETE FROM `keywords`;
+/*!40000 ALTER TABLE `keywords` DISABLE KEYS */;
+INSERT INTO `keywords` (`id`, `domain_id`, `name`) VALUES
+	(0000000017, 32, 'NIKE'),
+	(0000000018, 32, 'ADIDAS'),
+	(0000000019, 32, 'PUMA'),
+	(0000000020, 32, 'LACOSTE'),
+	(0000000021, 32, 'DISCOVERY'),
+	(0000000029, 32, '123'),
+	(0000000030, 32, 'asdf');
+/*!40000 ALTER TABLE `keywords` ENABLE KEYS */;
+
+-- 테이블 boxgo.product 구조 내보내기
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE IF NOT EXISTS `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '제품번호',
+  `name` varchar(128) NOT NULL COMMENT '제품명',
+  `barcode` varchar(16) DEFAULT NULL COMMENT '바코드',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='제품';
+
+-- 테이블 데이터 boxgo.product:~0 rows (대략적) 내보내기
+DELETE FROM `product`;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

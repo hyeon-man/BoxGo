@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="keywords">
+
+    <select id="list" resultType="keywords">
+        SELECT *
+        FROM keywords
+        <where>
+            <if test="search == 0"> domain_id = #{domainId} </if>
+            <if test="search == 1"> id LIKE CONCAT(CONCAT('%', #{keyword}), '%') </if>
+            <if test="search == 2"> name LIKE CONCAT(CONCAT('%', #{keyword}), '%') </if>
+        </where>
+        LIMIT #{offset}, #{perPage}
+    </select>
+
+    <select id="total" resultType="Integer">
+        SELECT COUNT(*)
+        FROM keywords;
+    </select>
+
+    <select id="item" resultType="keywords">
+        SELECT *
+        FROM keywords
+        WHERE id = #{id}
+    </select>
+
+
+    <update id="update">
+        UPDATE keywords
+        set name = #{name}
+        where id = #{id} and domain_id = #{domainId}
+    </update>
+
+    <delete id="delete">
+        delete
+        from keywords
+        where id = #{id} and domain_id = #{domainId}
+    </delete>
+
+    <insert id="add">
+        insert into keywords
+        VALUES (null, #{domainId}, #{name})
+    </insert>
+</mapper>
