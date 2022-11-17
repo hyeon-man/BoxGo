@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="domain">
+	<sql id="search">
+		SELECT * FROM domain 
+		
+		<where>
+			<if test="search == 1">
+			</if>						
+		</where>
+	</sql>
 
-    <select id="list" resultType="Domain">
-        SELECT *
-        FROM domain
-        <where>
-            <if test="search == 1"> id LIKE CONCAT(CONCAT('%', #{keyword}), '%') </if>
-            <if test="search == 2"> name LIKE CONCAT(CONCAT('%', #{keyword}), '%')</if>
-        </where>
-        LIMIT #{offset}, #{perPage}
-    </select>
-
-    <select id="item" resultType="Domain">
-        SELECT *
-        FROM domain
-        WHERE id = #{id}
-    </select>
-
-    <select id="total" resultType="Integer">
-        SELECT COUNT(*)
-        FROM domain;
-    </select>
-
-
-    <update id="update">
-        UPDATE domain
-        set name = #{name}
-        where id = #{id}
-    </update>
-
-    <delete id="delete">
-        delete
-        from domain
-        where id = #{id}
-    </delete>
-
-    <insert id="add">
-        insert into domain
-        VALUES (#{id}, #{name})
-    </insert>
+	<select id="total" resultType="Integer">
+		SELECT COUNT(*) FROM (<include refid="search"></include>) T1
+	</select>
+	
+	<select id="list" resultType="Domain">
+		SELECT * 
+		FROM (<include refid="search"></include>) T1
+    	LIMIT #{offset}, #{perPage}		
+	</select>
+	
+	<insert id="add">
+		INSERT INTO domain
+		(name)
+		VALUES (#{name})
+	</insert>
+	
+	<delete id="delete">
+		DELETE FROM domain
+		WHERE id=#{id}
+	</delete>
+	
+	<select id="item" resultType="Domain">
+		SELECT * FROM domain
+		WHERE id=#{id}
+	</select>
+	
+	<update id="update">
+		UPDATE domain
+		SET name=#{name}
+		WHERE id=#{id}
+	</update>
 </mapper>

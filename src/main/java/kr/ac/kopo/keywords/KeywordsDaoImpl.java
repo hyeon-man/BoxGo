@@ -49,4 +49,7 @@ public class KeywordsDaoImpl implements KeywordsDao {
     public void delete(Keywords keywords) {
         sql.delete("keywords.delete", keywords);
     }
+
+
+
 }

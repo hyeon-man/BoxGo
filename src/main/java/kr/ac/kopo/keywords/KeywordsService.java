@@ -16,4 +16,6 @@ public interface KeywordsService {
     void update(Keywords keywords);
 
     void delete(Keywords keywords);
+
+    List<Keywords> list(int domainId);
 }

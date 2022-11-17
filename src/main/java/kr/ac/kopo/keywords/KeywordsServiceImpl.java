@@ -42,4 +42,14 @@ public class KeywordsServiceImpl implements KeywordsService {
     public void delete(Keywords keywords) {
         dao.delete(keywords);
     }
+
+    @Override
+    public List<Keywords> list(int domainId) {
+        KeywordsPager pager = new KeywordsPager();
+        pager.setDomainId(domainId);
+        pager.setPerGroup(0);
+
+
+        return dao.list(pager);
+    }
 }
